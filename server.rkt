@@ -126,7 +126,7 @@ The third list is the players that are only observing.
                   (field observers))
           (world% (field players)
                   (field regions)
-                  (field observers))))
+                  (cons iw (field observers)))))
     
     #|
 
@@ -271,7 +271,10 @@ There is no need to send the list of observers.
                  ; return illegal move
                  (illegal-attack (second m))))]
           ; player wants to change his name
-          [else (change-name iw (second m))]))
+          [(symbol=? (first m) 'name) (change-name iw (second m))]
+          [else (make-bundle this
+                  (list iw 'error)
+                  empty)]))
       
       ; iWorld String -> Bundle
       ; Change the name of the given iworld to the given String
